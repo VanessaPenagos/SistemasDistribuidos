@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import socket
 
-Dato1 = "35" # number 1
-Dato2 = "50" # number 2
+Dato1 = "35"
+Dato2 = "50"
 
 s = socket.socket()
 s.connect(('localhost', 9999))
