@@ -14,7 +14,7 @@ server.register_introspection_functions()
 # Register a function under a different name
 def logaritmo_function(dato):
 	x, y = dato.split("l")
-	log = math.log(int(Dato1), int(Dato2))
+	log= math.log(int(Dato1), int(Dato2))
 	return str(log)
 server.register_function(logaritmo_function, 'log')
 

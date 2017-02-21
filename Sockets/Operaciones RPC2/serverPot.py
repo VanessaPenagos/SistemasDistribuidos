@@ -1,22 +1,22 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
-import math
 
 # Restrict to a particular path.
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
 # Create server
-server = SimpleXMLRPCServer(("localhost", 8007),
+server = SimpleXMLRPCServer(("localhost", 8005),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
 
 # Register a function under a different name
-def logaritmo_function(dato):
-	x, y = dato.split("l")
-	log = math.log(int(Dato1), int(Dato2))
-	return str(log)
-server.register_function(logaritmo_function, 'log')
+def potencia_function(dato):
+	x, y = dato.split("^")
+	pot= pow(int(x),int(y))
+	return str(pot)
+server.register_function(potencia_function, 'pot')
 
 # Run the server's main loop
 server.serve_forever()
+
