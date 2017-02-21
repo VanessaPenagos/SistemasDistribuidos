@@ -26,7 +26,6 @@ while 1:
     resta = int(Dato1) - int(Dato2)
     multiplicacion = int(Dato1) * int(Dato2)
     potencia = pow(int(Dato1), int(Dato2))
-
     #Validacion
     #Division
     if Dato2 == '0':
