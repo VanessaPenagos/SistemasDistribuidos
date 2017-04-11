@@ -1,0 +1,11 @@
+Proyecto 1:
+
+1. Construir un sistema que permita compartir recursos: Archivos.
+  1.1 Todas las maquinas deben poder acceder a archivos remotos.
+  1.2 La dirección de la maquina donde este alojado el archivo, no puede quedar integrada en el codigo. --> Servidor si
+  1.3 Cada vez que un proceso inicie, debe registrar los archivos y permisos que va a compartir.  (lectura, esritura)
+  1.4 Los permisos se generan aleatoriamente para todos los procesos conectados.
+  1.5 Se debe permitir listar, eliminar, modificar, leer los archivos compartidos.
+  1.6 Se deben permitir dectectar y eliminar los bloqueos en el sistema.
+
+Fecha de entrega: 27 de abril.
