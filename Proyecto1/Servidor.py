@@ -20,18 +20,7 @@ Archivos = []
 class MyFuncs:
 
         def AgregarArchivo(self):
-
-
-
         def QuitResources(self,resource):
-          if resource in Resources:
-            r = Resources.index(resource)
-            print Resources
-            Resources.pop(r)
-            return resource
-          else:
-            print "No esta disponible"
-            return 'No esta disponible'
 server.register_instance(MyFuncs())
 
 server.serve_forever()
