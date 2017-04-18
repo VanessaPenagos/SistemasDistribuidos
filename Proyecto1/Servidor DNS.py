@@ -58,22 +58,27 @@ class MyFuncs:
 					cliente.AgregarArchivo(archivo)
 		archivoCompartido = ArchivosCompartidos(ip, puerto, nombre)
 		self.archivosCompartidos.append(archivoCompartido)
-		return "Archivo "+ nombre +" registrado"
+		print "El archivo "+ nombre +" ha sido registrado"
+		return nombre
 
 	def ListarArchivos(self):
-		pass
-		return 0
+		lista = []
+		for i in self.archivosCompartidos:
+			lista.append(i.nombre)
+		return lista
 
 	def BuscarArchivo (self, nombre):
-		pass
-		return 0 
+		for value in self.archivosCompartidos:
+			if value.nombre == nombre:
+				direccion = "http://"+value.ip+":"+str(value.puerto)
+				return direccion
+		return "Nope"
 
+##Para preguntar al profesor####
 	def GenerarPermisos(self):
-		pass
 		return 0 
 
-	def EliminarArchivos(self):
-		pass
+	def EliminarArchivos(self,nombre):
 		return 0
 
 server.register_instance(MyFuncs())

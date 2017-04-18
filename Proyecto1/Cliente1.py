@@ -7,7 +7,7 @@ import threading
 import os
 
 IP = '127.0.0.1'
-PUERTO = 8007
+PUERTO = 8008
 Archivos = ["hola.txt", "vane.txt", "diego.txt"]
 
 #################### SERVIDOR ###########################
@@ -28,7 +28,6 @@ class MyFuncs:
 
 	def ModificarArchivos(self, nombrearchivo):
 		os.popen("notepad "+nombrearchivo)
-		return 0
 
 server.register_instance(MyFuncs())
 
@@ -38,7 +37,6 @@ t.start()
 ##################### CLIENTE ###########################
 
 server = xmlrpclib.ServerProxy('http://localhost:8006')
-print "Registrando Archivos ..."
 registroCliente = server.RegistrarCliente(IP, PUERTO)
 if registroCliente != "Cliente ya registrado":
 	for i in Archivos:
@@ -65,6 +63,7 @@ while True:
 			contenido = maquinaN.LeerArchivo(nombre)
 			print "\n",contenido
 			maquinaN.ModificarArchivos(nombre)
+			
 
 
  
