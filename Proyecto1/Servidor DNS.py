@@ -25,6 +25,11 @@ class Cliente:
 	def AgregarArchivo (self, archivo):
 		self.archivos.append(archivo)
 
+	def ElimnarArchivo (self, archivo):
+		for elarchivo in self.archivos:
+			if archivo == elarchivo:
+				self.archivos.remove(elarchivo)
+
 class ArchivosCompartidos:
 	def __init__ (self, ip, puerto, nombre):
 		self.ip = ip
@@ -74,12 +79,21 @@ class MyFuncs:
 				return direccion
 		return "Nope"
 
+	def EliminarArchivos(self, nombre):
+		for value in self.archivosCompartidos:
+			if value.nombre == nombre:
+				ip = value.ip
+				puerto = value.puerto
+				self.archivosCompartidos.remove(nombre)
+		for cliente in self.clientes:
+			if cliente.direccionip == ip and cliente.puerto == puerto:
+				cliente.ElimnarArchivo(nombre)
+		return 0
+
 ##Para preguntar al profesor####
 	def GenerarPermisos(self):
 		return 0 
 
-	def EliminarArchivos(self,nombre):
-		return 0
 
 server.register_instance(MyFuncs())
 
