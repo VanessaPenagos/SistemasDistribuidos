@@ -51,7 +51,7 @@ class MyFuncs:
 			if cliente.direccionip == ip and cliente.puerto == puerto:
 				return "Cliente ya registrado"
 		cliente = Cliente(ip, puerto)
-		#Permisos 
+		#Permisos
 		for p in self.archivosCompartidos:
 			permiso = random.randint(0,1)
 			print "random rc", permiso
@@ -72,13 +72,12 @@ class MyFuncs:
 		#Permisos
 		for p in self.clientes:
 			permiso = random.randint(0,1)
-			print "random ra",permiso
-			if permiso == 1:
-				direccion = p.direccionip+":"+str(p.puerto)
+			direccion = p.direccionip+":"+str(p.puerto)
+			direccion2 = ip+":"+str(puerto)
+			if permiso == 1 and direccion != direccion2:
 				archivoCompartido.permisoescritura.append(direccion)
+    				print "random ra",permiso
 		self.archivosCompartidos.append(archivoCompartido)
-		for i in self.archivosCompartidos:
-			print i.permisoescritura,"Los permisos"
 		print "El archivo "+ nombre +" ha sido registrado"
 
 		return nombre
