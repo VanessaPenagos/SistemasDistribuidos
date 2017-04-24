@@ -91,7 +91,6 @@ while True:
 				server.Bloqueo(nombre)
 				maquinaN = xmlrpclib.ServerProxy(direccion)
 				contenido2 = maquinaN.LeerArchivo(nombre)
-				print contenido2
 				archivo = open(nombre,"w")
 				archivo.write(contenido2)
 				archivo.close()
