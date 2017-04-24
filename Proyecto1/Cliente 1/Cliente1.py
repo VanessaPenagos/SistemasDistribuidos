@@ -103,8 +103,9 @@ while True:
 			maquinaN = xmlrpclib.ServerProxy(direccion)
 			maquinaN.EliminarArchivos(nombre)
 			server.EliminarArchivos(nombre)
-			os.remove(nombre)
-			MisArchivos.remove(nombre)
+			if nombre in MisArchivos:
+				MisArchivos.remove(nombre)		
+				os.remove(nombre)
 	if opcion == '5':
 		break
 	if opcion not in opciones:

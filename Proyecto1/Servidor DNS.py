@@ -10,9 +10,8 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
 class Archivo:
-	def __init__(self, nombre, ip, puerto, permiso):
+	def __init__(self, nombre, ip, puerto):
 		self.nombre = nombre
-		self.permiso = permiso # 0-> escritura , 1-> lectura, 2-> ambos
 		self.ipcliente = ip
 		self.puertocliente = puerto
 
@@ -35,6 +34,8 @@ class ArchivosCompartidos:
 		self.ip = ip
 		self.puerto = puerto
 		self.nombre = nombre
+		self.permisoescritura = []
+		self.permisoescritura.append(ip+":"+str(puerto))
 
 server = SimpleXMLRPCServer((IP,PORT),
                             requestHandler=RequestHandler)
@@ -50,11 +51,17 @@ class MyFuncs:
 			if cliente.direccionip == ip and cliente.puerto == puerto:
 				return "Cliente ya registrado"
 		cliente = Cliente(ip, puerto)
+		#Permisos 
+		for p in self.archivosCompartidos:
+			permiso = random.randint(0,1)
+			print "random rc", permiso
+			if permiso == 1:
+				p.permisoescritura.append(ip+":"+str(puerto))
 		self.clientes.append(cliente)
 		return "Cliente Registrado"
 
 	def RegistrarArchivos (self, nombre, ip, puerto):
-		archivo = Archivo(nombre, ip, puerto, 2)
+		archivo = Archivo(nombre, ip, puerto)
 		for a in self.archivosCompartidos:
 			if a.nombre == nombre:
 				return "Archivo ya registrado"
@@ -62,14 +69,25 @@ class MyFuncs:
 			if cliente.direccionip == ip and cliente.puerto == puerto:
 					cliente.AgregarArchivo(archivo)
 		archivoCompartido = ArchivosCompartidos(ip, puerto, nombre)
+		#Permisos
+		for p in self.clientes:
+			permiso = random.randint(0,1)
+			print "random ra",permiso
+			if permiso == 1:
+				direccion = p.direccionip+":"+str(p.puerto)
+				archivoCompartido.permisoescritura.append(direccion)
 		self.archivosCompartidos.append(archivoCompartido)
+		for i in self.archivosCompartidos:
+			print i.permisoescritura,"Los permisos"
 		print "El archivo "+ nombre +" ha sido registrado"
+
 		return nombre
 
 	def ListarArchivos(self):
 		lista = []
 		for i in self.archivosCompartidos:
 			lista.append(i.nombre)
+			print i.permisoescritura," Estos son los permisos de ", i.nombre
 		return lista
 
 	def BuscarArchivo (self, nombre):
@@ -84,16 +102,11 @@ class MyFuncs:
 			if value.nombre == nombre:
 				ip = value.ip
 				puerto = value.puerto
-				self.archivosCompartidos.remove(nombre)
+				self.archivosCompartidos.remove(value)
 		for cliente in self.clientes:
 			if cliente.direccionip == ip and cliente.puerto == puerto:
 				cliente.ElimnarArchivo(nombre)
 		return 0
-
-##Para preguntar al profesor####
-	def GenerarPermisos(self):
-		return 0 
-
 
 server.register_instance(MyFuncs())
 

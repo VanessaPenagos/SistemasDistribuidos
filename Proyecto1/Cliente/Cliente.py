@@ -12,6 +12,7 @@ MisArchivos = ["hola.txt", "vane.txt", "pepe.txt"]
 
 #################### SERVIDOR ###########################
 
+
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
@@ -103,16 +104,10 @@ while True:
 			maquinaN = xmlrpclib.ServerProxy(direccion)
 			maquinaN.EliminarArchivos(nombre)
 			server.EliminarArchivos(nombre)
-			os.remove(nombre)
-			MisArchivos.remove(nombre)
+			if nombre in MisArchivos:
+				MisArchivos.remove(nombre)		
+				os.remove(nombre)
 	if opcion == '5':
 		break
 	if opcion not in opciones:
 		print "No existe esta opcion en el menu"
-
-
-
-
-
-
- 
