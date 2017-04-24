@@ -12,7 +12,6 @@ MisArchivos = ["hola.txt", "vane.txt", "pepe.txt"]
 
 #################### SERVIDOR ###########################
 
-
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
@@ -55,7 +54,7 @@ if registroCliente != "Cliente ya registrado":
 		time.sleep(1)
 
 while True:
-	print "\n 1. Listar mis archivos \n 2. Listar archivos compartidos \n 3. Buscar Archivo \n 4. Eliminar archivos \n 5. Cerrar"
+	print "\n 1. Listar mis archivos \n 2. Listar archivos compartidos \n 3. Leer Archivo \n 4. Modificar Archivos\n 5. Eliminar archivos \n 6. Cerrar"
 	opciones = ['1','2','3','4','5']
 	opcion = raw_input("Elija una opcion: ")
 	if opcion == '1':
@@ -73,41 +72,56 @@ while True:
 			i += 1
 	if opcion == '3':
 		nombre = raw_input("Ingrese el nombre del archivo (con su extension): ")
-		direccion = server.BuscarArchivo(nombre)
+		mi_direccion=IP+":"+str(PUERTO)
+		direccion, permiso = server.BuscarArchivo(nombre, mi_direccion)
 		if direccion == "Nope":
-			print "No se encuentra el archivo"
+			print "No se encuentra el archivo o el archivo se encuentra en uso"
 		else:
 			maquinaN = xmlrpclib.ServerProxy(direccion)
-			## Permisos de lectura
 			contenido1 = maquinaN.LeerArchivo(nombre)
 			print "\n",contenido1
-
-			#Permisos de escritura
-			contenido2 = maquinaN.LeerArchivo(nombre)
-			print contenido2
-			archivo = open(nombre,"w")
-			archivo.write(contenido2)
-			archivo.close()
-			os.popen("notepad "+ nombre)
-			archivo = open(nombre,"r")
-			contenido3 = archivo.read()
-			maquinaN.ActualizarArchivo(nombre, contenido3)
-			archivo.close()
-			if nombre not in MisArchivos:
-				os.remove(nombre)
 	if opcion == '4':
 		nombre = raw_input("Ingrese el nombre del archivo (con su extension): ")
-		direccion = server.BuscarArchivo(nombre)
+		mi_direccion=IP+":"+str(PUERTO)
+		direccion, permiso = server.BuscarArchivo(nombre, mi_direccion)
 		if direccion == "Nope":
-			print "No se encuentra el archivo"
+			print "No se encuentra el archivo o el archivo se encuentra en uso"
 		else:
-			maquinaN = xmlrpclib.ServerProxy(direccion)
-			maquinaN.EliminarArchivos(nombre)
-			server.EliminarArchivos(nombre)
-			if nombre in MisArchivos:
-				MisArchivos.remove(nombre)		
-				os.remove(nombre)
+			if permiso == 1:
+				server.Bloqueo(nombre)
+				maquinaN = xmlrpclib.ServerProxy(direccion)
+				contenido2 = maquinaN.LeerArchivo(nombre)
+				print contenido2
+				archivo = open(nombre,"w")
+				archivo.write(contenido2)
+				archivo.close()
+				os.popen("notepad "+ nombre)
+				archivo = open(nombre,"r")
+				contenido3 = archivo.read()
+				maquinaN.ActualizarArchivo(nombre, contenido3)
+				archivo.close()
+				if nombre not in MisArchivos:
+					os.remove(nombre)
+				server.Desbloqueo(nombre)
+			else:
+				print "No tiene permiso para escribir el archivo"			
 	if opcion == '5':
+		nombre = raw_input("Ingrese el nombre del archivo (con su extension): ")
+		mi_direccion=IP+":"+str(PUERTO)
+		direccion, permiso = server.BuscarArchivo(nombre, mi_direccion)
+		if direccion == "Nope":
+			print "No se encuentra el archivo o el archivo se encuentra en uso"
+		else:
+			if permiso == 1:
+				maquinaN = xmlrpclib.ServerProxy(direccion)
+				maquinaN.EliminarArchivos(nombre)
+				server.EliminarArchivos(nombre)
+				if nombre in MisArchivos:
+					MisArchivos.remove(nombre)		
+					os.remove(nombre)
+			else:
+				print "No tiene permisos para eliminar el archivo"
+	if opcion == '6':
 		break
 	if opcion not in opciones:
 		print "No existe esta opcion en el menu"

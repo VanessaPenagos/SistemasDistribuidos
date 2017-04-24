@@ -45,6 +45,7 @@ class MyFuncs:
 	def __init__(self):
 		self.clientes = []
 		self.archivosCompartidos = []
+		self.archivosBloqueados = []
 
 	def RegistrarCliente (self, ip, puerto):
 		for cliente in self.clientes:
@@ -54,7 +55,6 @@ class MyFuncs:
 		#Permisos
 		for p in self.archivosCompartidos:
 			permiso = random.randint(0,1)
-			print "random rc", permiso
 			if permiso == 1:
 				p.permisoescritura.append(ip+":"+str(puerto))
 		self.clientes.append(cliente)
@@ -76,7 +76,6 @@ class MyFuncs:
 			direccion2 = ip+":"+str(puerto)
 			if permiso == 1 and direccion != direccion2:
 				archivoCompartido.permisoescritura.append(direccion)
-    				print "random ra",permiso
 		self.archivosCompartidos.append(archivoCompartido)
 		print "El archivo "+ nombre +" ha sido registrado"
 
@@ -89,11 +88,17 @@ class MyFuncs:
 			print i.permisoescritura," Estos son los permisos de ", i.nombre
 		return lista
 
-	def BuscarArchivo (self, nombre):
+	def BuscarArchivo (self, nombre, dir_entrada):
+		permiso = 0
+		for bloqueo in self.archivosBloqueados:
+			if bloqueo.nombre == nombre:
+				return "Nope", permiso
 		for value in self.archivosCompartidos:
 			if value.nombre == nombre:
 				direccion = "http://"+value.ip+":"+str(value.puerto)
-				return direccion
+				if dir_entrada in value.permisoescritura:
+					permiso = 1
+				return direccion, permiso
 		return "Nope"
 
 	def EliminarArchivos(self, nombre):
@@ -107,6 +112,17 @@ class MyFuncs:
 				cliente.ElimnarArchivo(nombre)
 		return 0
 
+	def Bloqueo (self, nombre):
+		for archivo in self.archivosCompartidos:
+			if archivo.nombre == nombre:
+				self.archivosBloqueados.append(archivo) 
+		return 0
+
+	def Desbloqueo(self, nombre):
+		for archivo in self.archivosCompartidos:
+			if archivo.nombre == nombre:
+				self.archivosBloqueados.remove(archivo) 
+		return 0
 server.register_instance(MyFuncs())
 
 server.serve_forever()
