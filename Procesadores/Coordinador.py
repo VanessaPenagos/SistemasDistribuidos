@@ -13,26 +13,26 @@ server = SimpleXMLRPCServer(("localhost", 8000),
 server.register_introspection_functions()
 
 class MyFuncs:
-	def PedidoProcesador(self, cliente):
-		Tab_order = sorted(Tabla_uso)
-		menor = Tabla_uso.index(Tab_order[0])
-		print menor, "menor"
-		if menor == cliente:
-			if '1' in Procesadores:
-				pos = Procesadores.index('1')
-				Procesadores[pos]=0
-				Tabla_uso[menor]+=1
-				print Tabla_uso, "uso"
-				print Procesadores, "Proceso"
-				return 1,pos
-		else:
-			Tabla_uso[menor]= Tabla_uso[menor]-1
-			print Tabla_uso,"usadno no"
-			return 0,-1
+    def PedidoProcesador(self, cliente):
+    	Tab_order = sorted(Tabla_uso)
+        menor = Tab_order[0]
+    	print menor, "menor"
+    	if menor == Tabla_uso[cliente]:
+    		if '1' in Procesadores:
+    			pos = Procesadores.index('1')
+    			Procesadores[pos] = 0
+    			Tabla_uso[cliente] += 1
+    			print Tabla_uso, "Si se asigno procesador"
+    			print Procesadores, "Procesador"
+    			return 1,pos
+    	else:
+    		Tabla_uso[cliente] -= 1
+    		print Tabla_uso,"No se asigno procesador"
+    		return 0,-1
 
-	def DevolverProcesador(self, pos):
-		Procesadores[pos] = '1'
-		return 0
+    def DevolverProcesador(self, pos):
+    	Procesadores[pos] = '1'
+    	return 0
 
 server.register_instance(MyFuncs())
 
