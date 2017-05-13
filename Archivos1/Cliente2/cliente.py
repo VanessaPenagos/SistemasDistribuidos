@@ -42,7 +42,7 @@ while True:
 
     if opcion == '1' :
         print "Abriendo archivo..."
-        os.popen("atom "+ "Vane.txt")
+        os.popen("notepad "+ "Vane.txt")
         archivo = open("Vane.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Vane.txt", contenido)
@@ -50,7 +50,7 @@ while True:
 
     if opcion == '2' :
         print "Abriendo archivo..."
-        os.popen("atom "+ "Dani.txt")
+        os.popen("notepad "+ "Dani.txt")
         archivo = open("Dani.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Dani.txt", contenido)
@@ -58,7 +58,7 @@ while True:
 
     if opcion == '3' :
         print "Abriendo archivo..."
-        os.popen("atom "+ "Otro.txt")
+        os.popen("notepad "+ "Otro.txt")
         archivo = open("Otro.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Otro.txt", contenido)
