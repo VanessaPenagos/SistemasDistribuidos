@@ -20,6 +20,7 @@ server = SimpleXMLRPCServer((IP,PUERTO),
 server.register_introspection_functions()
 
 class MyFuncs:
+
     def RecibirActualizacion(self, nombrearchivo, contenidoarchivo):
         archivo = open(nombrearchivo,"w")
         archivo.write(contenidoarchivo)

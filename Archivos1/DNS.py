@@ -18,27 +18,17 @@ server = SimpleXMLRPCServer((IP,PORT),
 server.register_introspection_functions()
 
 class MyFuncs:
-    def ActualizarArchivo(self, nombrearchivo, contenidoarchivo):
+    def ActualizarArchivo(self, nombrearchivo, contenidoarchivo, puerto):
         archivo = open(nombrearchivo,"w")
         archivo.write(contenidoarchivo)
         archivo.close()
-        server1 = xmlrpclib.ServerProxy('http://localhost:8007')
-        server2 = xmlrpclib.ServerProxy('http://localhost:8008')
+        if puerto == clientes[0] :
+            server1 = xmlrpclib.ServerProxy('http://localhost:'+str(clientes[1]))
+        else :
+            server1 = xmlrpclib.ServerProxy('http://localhost:'+str(clientes[0]))
         server1.RecibirActualizacion(nombrearchivo, contenidoarchivo)
-        server2.RecibirActualizacion(nombrearchivo, contenidoarchivo)
         return 0
 
-	def Bloqueo (self, nombre):
-		for archivo in self.archivosCompartidos:
-			if archivo.nombre == nombre:
-				self.archivosBloqueados.append(archivo)
-		return 0
-
-	def Desbloqueo(self, nombre):
-		for archivo in self.archivosCompartidos:
-			if archivo.nombre == nombre:
-				self.archivosBloqueados.remove(archivo)
-		return 0
 server.register_instance(MyFuncs())
 
 server.serve_forever()
