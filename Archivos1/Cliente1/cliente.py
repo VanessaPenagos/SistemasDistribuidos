@@ -20,7 +20,7 @@ server = SimpleXMLRPCServer((IP,PUERTO),
 server.register_introspection_functions()
 
 class MyFuncs:
-    def RecibirActualizacion(nombrearchivo, contenidoarchivo):
+    def RecibirActualizacion(self, nombrearchivo, contenidoarchivo):
         archivo = open(nombrearchivo,"w")
         archivo.write(contenidoarchivo)
         archivo.close()
@@ -42,24 +42,24 @@ while True:
 
     if opcion == '1' :
         print "Abriendo archivo..."
-        os.popen("nano "+ "Vane.txt")
-        archivo = open(nombre,"r")
+        os.popen("atom "+ "Vane.txt")
+        archivo = open("Vane.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Vane.txt", contenido)
         archivo.close()
 
     if opcion == '2' :
         print "Abriendo archivo..."
-        os.popen("nano "+ "Dani.txt")
-        archivo = open(nombre,"r")
+        os.popen("atom "+ "Dani.txt")
+        archivo = open("Dani.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Dani.txt", contenido)
         archivo.close()
 
     if opcion == '3' :
         print "Abriendo archivo..."
-        os.popen("nano "+ "Otro.txt")
-        archivo = open(nombre,"r")
+        os.popen("atom "+ "Otro.txt")
+        archivo = open("Otro.txt","r")
         contenido = archivo.read()
         server.ActualizarArchivo("Otro.txt", contenido)
         archivo.close()
