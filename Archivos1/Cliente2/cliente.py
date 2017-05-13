@@ -7,7 +7,7 @@ import threading
 import os
 
 IP = '127.0.0.1'
-PUERTO = 8008
+PUERTO = 8007
 CopiaArchivos = ["Dani.txt", "Vane.txt", "Otro.txt"]
 
 #################### SERVIDOR ###########################
@@ -40,22 +40,25 @@ while True:
     opciones = ['1','2','3']
     opcion = raw_input("Elija una opcion: ")
 
-    if opcion == 1 :
-        os.popen("notepad "+ "Vane.txt")
+    if opcion == '1' :
+        print "Abriendo archivo..."
+        os.popen("nano "+ "Vane.txt")
         archivo = open(nombre,"r")
         contenido = archivo.read()
         server.ActualizarArchivo("Vane.txt", contenido)
         archivo.close()
 
-    if opcion == 2 :
-        os.popen("notepad "+ "Dani.txt")
+    if opcion == '2' :
+        print "Abriendo archivo..."
+        os.popen("nano "+ "Dani.txt")
         archivo = open(nombre,"r")
         contenido = archivo.read()
         server.ActualizarArchivo("Dani.txt", contenido)
         archivo.close()
 
-    if opcion == 3 :
-        os.popen("notepad "+ "Otro.txt")
+    if opcion == '3' :
+        print "Abriendo archivo..."
+        os.popen("nano "+ "Otro.txt")
         archivo = open(nombre,"r")
         contenido = archivo.read()
         server.ActualizarArchivo("Otro.txt", contenido)
