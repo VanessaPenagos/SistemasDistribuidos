@@ -1,0 +1,12 @@
+Proyecto 2.
+
+1. Construir un sistema que simule el proceso de compartir memoria en un sistema distribuido.
+
+    1.1. En cada máquina pueden haber varios procesos.
+    1.2. Se debe compartir un espacio de memoria (x máquina), en donde los procesos de otras máquinas puedan escribir y/o leer.
+    1.3. Cada vez que el primer proceso inicie en un máquina debe enviar los datos del espacio compartido.
+    1.4. Se debe compartir el espacio utilizando páginas.
+    1.5. Se debe implementar la exclusión mutua.
+    1.6. Se debe implementar uno de los modelos de consistencia.
+
+Fecha de entrega:  30 de mayo.
