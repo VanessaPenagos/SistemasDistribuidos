@@ -1,46 +1,65 @@
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 import xmlrpclib
-import random
-import time
 import threading
 import os
 
 IP = '127.0.0.1'
-PUERTO = 8004
-MisPaginas = ["M1P1.txt", "M1P2.txt", "M1P3.txt"]
-PaginasDisponibles = ["M1P1.txt", "M1P2.txt", "M1P3.txt"]
-Capacidad = [10, 8, 5]
+PUERTO = 8001
+Paginas = {"M1P1.txt": 8}
+Disponibilidad = [0, 0]
 
-#################### SERVIDOR ###########################
 
+#---------------------------Servidor-------------------------------#
 class RequestHandler(SimpleXMLRPCRequestHandler):
-    rpc_paths = ('/RPC2',)
+    rpc_paths = ('/RPC2', )
 
-server = SimpleXMLRPCServer((IP,PUERTO),
-                            requestHandler=RequestHandler)
+
+server = SimpleXMLRPCServer((IP, PUERTO), requestHandler=RequestHandler)
 server.register_introspection_functions()
 
+
 class MyFuncs:
-	def PrestarPagina(self):
-		if PaginasDisponibles.length() == 0:
-			return 0
-		else: 
-			Pagina =  PaginasDisponibles[0].remove()
-			capacidad = MisPaginas.index(Pagina)
-			Archivo = open(Pagina,"r")
-			contenido = Archivo.read()
-			Archivo.close()
-			return contenido, Pagina, capacidad
+    def ActualizarPagina(self, nombre, contenido):
+        if nombre in Paginas:
+            lineas = len(open(nombre).readlines())
+            Pos = Paginas.index(nombre)
+            if lineas > Paginas[nombre]:
+                return 0
+            else:
+                pagina = open(nombre, "w")
+                pagina.write(contenido)
+                pagina.close()
+                Paginas[nombre] -= lineas
+                return 1
 
-	def Consistencia(self, nombrearchivo, contenido):
-		pagina = open(nombrearchivo,"w")
-		pagina.write(contenido)
-		pagina.close()
-		PaginasDisponibles.append(nombrearchivo)
+    def BuscarPagina(self, nombre):
+        if nombre in Paginas:
+            print "El nombre es : ", nombre
+            return 1
+        else:
+            return 0
 
-		return 0
+    def PedirCopia(self, nombre):
+        if nombre in Paginas:
+            capacidad = Paginas[nombre]
+            Archivo = open(nombre, "r")
+            contenido = Archivo.read()
+            Archivo.close()
+            return contenido, capacidad
+        else:
+            return 0
+
+    def Bloqueo(self, nombre):
+        Pos = nombre[1]
+        Disponibilidad[Pos] = 1
+        return 1
+
+    def Desbloqueo(self, nombre):
+        Pos = nombre[1]
+        Disponibilidad[Pos] = 0
+        return 0
+
 
 server.register_instance(MyFuncs())
-
-server = xmlrpclib.ServerProxy('http://localhost:8006')
+server.serve_forever()
