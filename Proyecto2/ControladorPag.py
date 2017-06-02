@@ -37,6 +37,7 @@ class MyFuncs:
 				return propietario
 			else
 				return "no"
+				
 	def ListarPagina(self):
 		for pag in self.paginas:
 			pag.nombre
