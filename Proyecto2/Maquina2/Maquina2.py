@@ -6,8 +6,9 @@ import os
 
 IP = '127.0.0.1'
 PUERTO = 8002
-Paginas = {"M2P1.txt": 8}
-Disponibilidad = [0, 0, 0]
+Paginas = {"M2P1.txt": 4}
+CapacidadTotal = {"M2P1.txt": 4}
+Disponibilidad = [0, 0]
 
 
 #---------------------------Servidor-------------------------------#
@@ -32,13 +33,19 @@ class MyFuncs:
                 pagina.close()
                 Paginas[nombre] -= lineas
                 return 1
+        else:
+            return -1
+
+    def AgregarCopia(self, nombre, capacidad):
+        Paginas[nombre] = capacidad
+        return "Copia agregada"
 
     def BuscarPagina(self, nombre):
         if nombre in Paginas:
             print "El nombre es : ", nombre
-            return 1
+            return Paginas[nombre], CapacidadTotal[nombre]
         else:
-            return 0
+            return -1
 
     def PedirCopia(self, nombre):
         if nombre in Paginas:
@@ -48,7 +55,7 @@ class MyFuncs:
             Archivo.close()
             return contenido, capacidad
         else:
-            return 0
+            return -1
 
     def Bloqueo(self, nombre):
         Pos = nombre[1]
