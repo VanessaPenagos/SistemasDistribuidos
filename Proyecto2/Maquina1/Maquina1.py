@@ -53,7 +53,7 @@ class MyFuncs:
             Archivo = open(nombre, "r")
             contenido = Archivo.read()
             Archivo.close()
-            return contenido, capacidad
+            return contenido, capacidad, CapacidadTotal[nombre]
         else:
             return -1
 
