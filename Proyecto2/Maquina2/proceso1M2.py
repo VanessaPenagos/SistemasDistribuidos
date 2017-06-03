@@ -8,6 +8,22 @@ IP = '127.0.0.1'
 PUERTO = 9021
 Maquinas = ['http://localhost:8001', 'http://localhost:8002']
 
+def Escribir(nombre, cParcial, cTotal):
+    print "La pagina tiene ", cTotal, "lineas en total"
+    print "Hay un maximo de ", cParcial, "lineas libres para escribir"
+    print "solo se guardaran ", cTotal, "lineas si sobrepasa la capacidad"
+    os.popen("gedit"+ nombre)
+    archivo = open(nombre,"r")
+    contenido = archivo.read()
+    lineas = len(open(nombre).readlines())
+    if lineas > cTotal:
+        print "Supero la capacidad maxima de almacenamiento, no se guardo todo el contenido"
+#       **Se borran las demas lineas**
+    for i in Maquinas:
+        if i != 'http://localhost:8001':
+            maquina = xmlrpclib.ServerProxy(i)
+            retorno = maquina.ActualizarPagina(nombre, contenido)
+            print "Pagina consistente"
 #------------------------- CLIENTE--------------------------------#
 
 while True:
@@ -57,24 +73,8 @@ while True:
                         Archivo = open(nombre, "w")
                         Archivo.write(Copia[0])
                         Archivo.close()
-                        Archivo = open(nombre, "r")
-                        contenido = Archivo.read()
-                        Archivo.close()
+                        Escribir(nombre, Copia[1], Copia[2])
                     else:
                         print "No existe la pagina referenciada"
         if(busqueda != -1 and Copia != -1):
-            print "La pagina tiene ", busqueda[1], "lineas en total"
-            print "Hay un maximo de ", busqueda[0], "lineas libres para escribir"
-            print "Si sobrepasa esta cantidad la informacion no sero guardada"
-            os.popen("gedit"+ nombre)
-            archivo = open(nombre,"r")
-            contenido3 = archivo.read()
-            lineas = len(open(nombre).readlines())
-            if lineas < busqueda[1]:
-                for i in Maquinas:
-                    if i != 'http://localhost:8002':
-                        maquina = xmlrpclib.ServerProxy(i)
-                        retorno = maquina.ActualizarPagina(nombre, contenido3)
-                        print "Pagina consistente"
-            else:
-                print "Supero la capacidad maxima de almacenamiento, no se guardo el contenido"
+            Escribir(nombre, busqueda[0], busqueda[1])
