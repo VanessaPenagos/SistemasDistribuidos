@@ -8,7 +8,7 @@ IP = '127.0.0.1'
 PUERTO = 8002
 Paginas = {"M2P1.txt": 4}
 CapacidadTotal = {"M2P1.txt": 4}
-Disponibilidad = [0, 0]
+Disponibilidad = [0, 0]  # Bloqueado = 1, Desbloqueado = 0
 
 
 #---------------------------Servidor-------------------------------#
@@ -42,28 +42,33 @@ class MyFuncs:
 
     def BuscarPagina(self, nombre):
         if nombre in Paginas:
+            Pos = int(nombre[1]) - 1
             print "El nombre es : ", nombre
-            return Paginas[nombre], CapacidadTotal[nombre]
+            return Paginas[nombre], CapacidadTotal[nombre], Disponibilidad[Pos]
         else:
             return -1
 
     def PedirCopia(self, nombre):
         if nombre in Paginas:
-            capacidad = Paginas[nombre]
-            Archivo = open(nombre, "r")
-            contenido = Archivo.read()
-            Archivo.close()
-            return contenido, capacidad, CapacidadTotal[nombre]
+            Pos = int(nombre[1]) - 1
+            if Disponibilidad[Pos] == 0:
+                capacidad = Paginas[nombre]
+                Archivo = open(nombre, "r")
+                contenido = Archivo.read()
+                Archivo.close()
+                return contenido, capacidad, CapacidadTotal[nombre]
+            else:
+                return "No"
         else:
             return -1
 
     def Bloqueo(self, nombre):
-        Pos = nombre[1]
+        Pos = int(nombre[1]) - 1
         Disponibilidad[Pos] = 1
         return 1
 
     def Desbloqueo(self, nombre):
-        Pos = nombre[1]
+        Pos = int(nombre[1]) - 1
         Disponibilidad[Pos] = 0
         return 0
 
