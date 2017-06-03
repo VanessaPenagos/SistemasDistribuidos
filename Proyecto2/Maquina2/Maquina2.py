@@ -24,7 +24,6 @@ class MyFuncs:
     def ActualizarPagina(self, nombre, contenido):
         if nombre in Paginas:
             lineas = len(open(nombre).readlines())
-            Pos = Paginas.index(nombre)
             if lineas > Paginas[nombre]:
                 return 0
             else:
@@ -36,8 +35,9 @@ class MyFuncs:
         else:
             return -1
 
-    def AgregarCopia(self, nombre, capacidad):
-        Paginas[nombre] = capacidad
+    def AgregarCopia(self, nombre, capacidadtotal, capacidadparcial):
+        Paginas[nombre] = capacidadparcial
+        CapacidadTotal[nombre] = capacidadtotal
         return "Copia agregada"
 
     def BuscarPagina(self, nombre):
