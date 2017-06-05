@@ -114,6 +114,7 @@ while True:
             else:
                 print "\n No es posible acceder a la memoria en este momento, intente mas tarde"
     if opcion == '3':
-        print "\n"
         print "M1P1.txt"
         print "M2P1.txt"
+    if opcion == '4':
+        break
